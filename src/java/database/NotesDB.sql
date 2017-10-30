@@ -18,9 +18,9 @@ CREATE TABLE User(
 
 INSERT INTO User values('admin', 'password', 'test@test.com', 1, 'Bob', 'Bobberson');
 
-DROP TABLE Notes;
+DROP TABLE Note;
 
-CREATE TABLE Notes(
+CREATE TABLE Note(
     noteId INT NOT NULL AUTO_INCREMENT,
     dateCreated DATETIME NOT NULL,
     contents VARCHAR(10000) CHARACTER SET utf8 NOT NULL,
