@@ -62,7 +62,7 @@ public class NoteDB {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         
         try {
-            List<Note> notes = em.createNamedQuery("Note.findall", Note.class).getResultList();
+            List<Note> notes = em.createNamedQuery("Note.findAll", Note.class).getResultList();
             return notes;
         } catch (Exception ex) {
             Logger.getLogger(NoteDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,8 +96,8 @@ public class NoteDB {
             trans.commit();
             return 1;
         } catch (Exception ex) {
-            Logger.getLogger(NoteDB.class.getName()).log(Level.SEVERE, null, ex);
             trans.rollback();
+            Logger.getLogger(NoteDB.class.getName()).log(Level.SEVERE, null, ex);
             throw new NotesDBException("Could not delete note");
         } finally {
             em.close();
