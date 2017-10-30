@@ -4,65 +4,55 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Manage Users</title>
-        <link rel="stylesheet" href="<c:url value='styles/notes.css' />" />
+        <title>Manage Notes</title>
+        
     </head>
     <body>
-        <h1>Manage Users</h1>
+        <h1>Manage Notes</h1>
         <h2>Users</h2>
         <p>${errorMessage}</p>
         <table>
             <tr>
-                <th>Username</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Delete</th>
-                <th>Edit</th>
+                <th>Note ID</th>
+                <th>Date Created</th>
+                <th>Contents</th>
             </tr>
-            <c:forEach var="user" items="${users}">
+            <c:forEach var="note" items="${notes}">
                 <tr>
-                    <td>${user.username}</td>
-                    <td>${user.firstname}</td>
-                    <td>${user.lastname}</td>
+                    <td>${note.noteId}</td>
+                    <td>${note.dateCreated}</td>
+                    <td>${note.contents}</td>
                     <td>
-                        <form action="users" method="post" >
+                        <form action="notes" method="post" >
                             <input type="submit" value="Delete">
                             <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="selectedUsername" value="${user.username}">
+                            <input type="hidden" name="selectedNote" value="${note.noteId}">
                         </form>
                     </td>
                     <td>
-                        <form action="users" method="get">
+                        <form action="notes" method="POST">
                             <input type="submit" value="Edit">
                             <input type="hidden" name="action" value="view">
-                            <input type="hidden" name="selectedUsername" value="${user.username}">
+                            <input type="hidden" name="selectedNote" value="${note.noteId}">
                         </form>
                     </td>
                 </tr>
             </c:forEach>
         </table>
-        <c:if test="${selectedUser == null}">
-            <h3>Add User</h3>
-            <form action="users" method="POST">
-                username: <input type="text" name="username"><br>
-                first name: <input type="text" name="firstname"><br>
-                last name: <input type="text" name="lastname"><br>
-                password: <input type="password" name="password"><br>
-                email: <input type="email" name="email"><br>
-                active: <input type="checkbox" name="active"><br>
+        <c:if test="${selectedNote == null}">
+            <h3>Add Note</h3>
+            <form action="notes" method="POST">
+                Content: <input type="text" name="contents"><br>
                 <input type="hidden" name="action" value="add">
                 <input type="submit" value="Save">
             </form>
         </c:if>
-        <c:if test="${selectedUser != null}">
-            <h3>Edit User</h3>
-            <form action="users" method="POST">
-                username: <input type="text" name="username" value="${selectedUser.username}" readonly><br>
-                first name: <input type="text" name="firstname" value="${selectedUser.firstname}"><br>
-                last name: <input type="text" name="lastname" value="${selectedUser.lastname}"><br>
-                password: <input type="password" name="password" value="${selectedUser.password}"><br>
-                email: <input type="email" name="email" value="${selectedUser.email}"><br>
-                active: <input type="checkbox" name="active" ${selectedUser.active == 1 ? "checked" : ""}><br>
+        <c:if test="${selectedNote != null}">
+            <h3>Edit Note</h3>
+            <form action="notes" method="POST">
+                Note ID: <input type="text" name="noteId" value="${selectedNote.noteId}" readonly><br>
+                Date Created: <input type="text" name="dateCreated" value="${selectedNote.dateCreated}" readonly><br>
+                Contents: <input type="text" name="contents" value="${selectedNote.contents}"><br>
                 <input type="hidden" name="action" value="edit">
                 <input type="submit" value="Save">
             </form>

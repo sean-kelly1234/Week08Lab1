@@ -27,7 +27,7 @@ public class NoteDB {
         try {
             String preparedQuery = "INSERT INTO Notes (dateCreated, contents) VALUES (?, ?)";
             PreparedStatement ps = connection.prepareStatement(preparedQuery);
-            ps.setString(1, note.getDateCreated().toString());
+            ps.setDate(1, new java.sql.Date(note.getDateCreated().getTime()));
             ps.setString(2, note.getContents());
             int rows = ps.executeUpdate();
             return rows;
@@ -43,8 +43,8 @@ public class NoteDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         try {
-            String preparedStatement = "UPDATE Notes SET"
-                    + "contents = ?"
+            String preparedStatement = "UPDATE Notes SET "
+                    + "contents = ? "
                     + "WHERE noteId = ?";
             PreparedStatement ps = connection.prepareStatement(preparedStatement);
             ps.setString(1, note.getContents());
@@ -63,7 +63,7 @@ public class NoteDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Users");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Notes");
             ResultSet rs = ps.executeQuery();
             List<Note> notes = new ArrayList<Note>();
             while (rs.next()){
@@ -82,8 +82,8 @@ public class NoteDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Users"
-                    + "WHERE noteId = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Notes"
+                    + " WHERE noteId = ?");
             ps.setInt(1, noteId);
             ResultSet rs = ps.executeQuery();
             Note note = null;
@@ -93,6 +93,7 @@ public class NoteDB {
             return note;
         } catch (SQLException ex) {
             Logger.getLogger(NoteDB.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
             throw new NotesDBException("Could not find notes");
         } finally {
             pool.freeConnection(connection);
@@ -103,7 +104,7 @@ public class NoteDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         try {
-            String preparedStatement = "DELETE FROM Notes"
+            String preparedStatement = "DELETE FROM Notes "
                     + "WHERE noteId = ?";
             PreparedStatement ps = connection.prepareStatement(preparedStatement);
             ps.setInt(1, note.getNoteId());
