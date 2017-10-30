@@ -37,7 +37,7 @@ public class NoteService {
     }
     
     public int delete(int noteId) throws NotesDBException{
-        return noteDB.delete(new Note(noteId, null, null));
+        return noteDB.delete(noteDB.getNote(noteId));
     }
     
     public int insert(String contents) throws NotesDBException{
